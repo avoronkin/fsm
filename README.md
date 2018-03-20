@@ -1,3 +1,6 @@
+## Finite state machine
+[![Build Status](https://travis-ci.org/avoronkin/fsm.svg?branch=master)](https://travis-ci.org/avoronkin/fsm)
+
 ```javascript
 describe('player', () => {
 
