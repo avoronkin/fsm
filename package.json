@@ -1,0 +1,17 @@
+{
+  "name": "fsm",
+  "version": "1.0.0",
+  "description": "finite state machine",
+  "main": "lib/fsm.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^22.4.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5"
+  }
+}
