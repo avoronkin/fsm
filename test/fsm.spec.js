@@ -10,9 +10,12 @@ describe('FSM', () => {
                 transitions: [
                     {action: 'open', from: 'closed', to: 'opened'},
                     {action: 'close', from: 'opened', to: 'closed'},
-                    {action: 'lock', from: 'closed', to: 'locked', guard: function () { return hasKey }},
-                    {action: 'unlock', from: 'locked', to: 'closed', guard: function () { return hasKey }}
-                ]
+                    {action: 'lock', from: 'closed', to: 'locked'},
+                    {action: 'unlock', from: 'locked', to: 'closed'}
+                ],
+                methods: {
+                    canLocked: function () { return hasKey }
+                }
             })
 
             expect(door.state).toEqual('closed')
@@ -22,6 +25,7 @@ describe('FSM', () => {
             expect(door.state).toEqual('opened')
             await door.close()
             expect(door.state).toEqual('closed')
+            hasKey = false
             await door.lock()
             expect(door.state).toEqual('closed')
             hasKey = true
@@ -29,6 +33,10 @@ describe('FSM', () => {
             expect(door.state).toEqual('locked')
             await door.open()
             expect(door.state).toEqual('locked')
+            hasKey = false
+            await door.unlock()
+            expect(door.state).toEqual('locked')
+            hasKey = true
             await door.unlock()
             expect(door.state).toEqual('closed')
 
