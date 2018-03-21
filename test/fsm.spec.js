@@ -4,19 +4,34 @@ describe('FSM', () => {
     describe('door', () => {
 
         it('can be closed and opened', async () => {
+            let hasKey = false
             const door = new FSM({
                 start: 'closed',
                 transitions: [
                     {action: 'open', from: 'closed', to: 'opened'},
-                    {action: 'close', from: 'opened', to: 'closed'}
+                    {action: 'close', from: 'opened', to: 'closed'},
+                    {action: 'lock', from: 'closed', to: 'locked', guard: function () { return hasKey }},
+                    {action: 'unlock', from: 'locked', to: 'closed', guard: function () { return hasKey }}
                 ]
             })
 
             expect(door.state).toEqual('closed')
             await door.open()
             expect(door.state).toEqual('opened')
+            await door.lock()
+            expect(door.state).toEqual('opened')
             await door.close()
             expect(door.state).toEqual('closed')
+            await door.lock()
+            expect(door.state).toEqual('closed')
+            hasKey = true
+            await door.lock()
+            expect(door.state).toEqual('locked')
+            await door.open()
+            expect(door.state).toEqual('locked')
+            await door.unlock()
+            expect(door.state).toEqual('closed')
+
         })
 
         it('can have handlers', async () => {
