@@ -178,13 +178,11 @@ describe('FSM', () => {
 
         })
 
-        it('should support short syntax', async () => {
+        it('should support compact syntax', async () => {
             const wizard = new FSM({
                 start: 'first',
                 transitions: [
-                    {name: 'next', states: ['first', 'second', 'third', 'fourth']},
-                    {name: 'next', from: 'fourth', to: 'done'},
-
+                    {name: 'next', states: ['first', 'second', 'third', 'fourth', 'done']},
                     {name: 'prev', states: ['fourth', 'third', 'second', 'first']},
                 ]
             })
@@ -213,9 +211,7 @@ describe('FSM', () => {
             const wizard = new FSM({
                 start: 'first',
                 transitions: [
-                    'next: first > second > third > fourth',
-                    'next: fourth > done',
-
+                    'next: first > second > third > fourth > done',
                     'prev: fourth > third > second > first',
                 ]
             })
