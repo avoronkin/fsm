@@ -119,6 +119,27 @@ describe('FSM', () => {
             expect(player.state).toEqual('stopped')
 
         })
+
+        it('should support short syntax', async () => {
+            const player = new FSM({
+                start: 'stopped',
+                transitions: [
+                    'play: stopped | paused > playing',
+                    'stop: playing | paused > stopped',
+                    'pause: playing > paused',
+                ]
+            })
+
+            expect(player.state).toEqual('stopped')
+            await player.play()
+            expect(player.state).toEqual('playing')
+            await player.pause()
+            expect(player.state).toEqual('paused')
+            await player.stop()
+            expect(player.state).toEqual('stopped')
+            await player.pause()
+            expect(player.state).toEqual('stopped')
+        })
     })
 
     describe('wizard', () => {
@@ -165,6 +186,37 @@ describe('FSM', () => {
                     {name: 'next', from: 'fourth', to: 'done'},
 
                     {name: 'prev', states: ['fourth', 'third', 'second', 'first']},
+                ]
+            })
+
+            expect(wizard.state).toEqual('first')
+            await wizard.next()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            expect(wizard.state).toEqual('third')
+            await wizard.next()
+            expect(wizard.state).toEqual('fourth')
+            await wizard.prev()
+            expect(wizard.state).toEqual('third')
+            await wizard.prev()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            await wizard.next()
+            await wizard.next()
+            expect(wizard.state).toEqual('done')
+            await wizard.prev()
+            expect(wizard.state).toEqual('done')
+
+        })
+
+        it('should support very short syntax', async () => {
+            const wizard = new FSM({
+                start: 'first',
+                transitions: [
+                    'next: first > second > third > fourth',
+                    'next: fourth > done',
+
+                    'prev: fourth > third > second > first',
                 ]
             })
 
