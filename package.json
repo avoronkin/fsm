@@ -4,7 +4,8 @@
   "description": "finite state machine",
   "main": "lib/fsm.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "jest --watchAll --notify"
   },
   "author": "",
   "license": "ISC",

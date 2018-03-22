@@ -8,13 +8,13 @@ describe('FSM', () => {
             const door = new FSM({
                 start: 'closed',
                 transitions: [
-                    {action: 'open', from: 'closed', to: 'opened'},
-                    {action: 'close', from: 'opened', to: 'closed'},
-                    {action: 'lock', from: 'closed', to: 'locked'},
-                    {action: 'unlock', from: 'locked', to: 'closed'}
+                    {name: 'open', from: 'closed', to: 'opened'},
+                    {name: 'close', from: 'opened', to: 'closed'},
+                    {name: 'lock', from: 'closed', to: 'locked'},
+                    {name: 'unlock', from: 'locked', to: 'closed'}
                 ],
                 methods: {
-                    canLocked: function () { return hasKey }
+                    canBeLocked: function () { return hasKey }
                 }
             })
 
@@ -53,8 +53,8 @@ describe('FSM', () => {
             const doorConfig = {
                 start: 'closed',
                 transitions: [
-                    {action: 'open', from: 'closed', to: 'opened'},
-                    {action: 'close', from: 'opened', to: 'closed'}
+                    {name: 'open', from: 'closed', to: 'opened'},
+                    {name: 'close', from: 'opened', to: 'closed'}
                 ],
                 methods: {
                     onClose,
@@ -98,13 +98,13 @@ describe('FSM', () => {
 
     describe('player', () => {
 
-        it('can play, pause and stop', async () => {
+        it('should play, pause and stop', async () => {
             const player = new FSM({
                 start: 'stopped',
                 transitions: [
-                    {action: 'play', from: ['stopped', 'paused'], to: 'playing'},
-                    {action: 'stop', from: ['playing', 'paused'], to: 'stopped'},
-                    {action: 'pause', from: 'playing', to: 'paused'},
+                    {name: 'play', from: ['stopped', 'paused'], to: 'playing'},
+                    {name: 'stop', from: ['playing', 'paused'], to: 'stopped'},
+                    {name: 'pause', from: 'playing', to: 'paused'},
                 ]
             })
 
@@ -119,6 +119,75 @@ describe('FSM', () => {
             expect(player.state).toEqual('stopped')
 
         })
+    })
+
+    describe('wizard', () => {
+        it('should go to the next step', async () => {
+            const wizard = new FSM({
+                start: 'first',
+                transitions: [
+                    {name: 'next', from: 'first', to: 'second'},
+                    {name: 'next', from: 'second', to: 'third'},
+                    {name: 'next', from: 'third', to: 'fourth'},
+                    {name: 'next', from: 'fourth', to: 'done'},
+
+                    {name: 'prev', from: 'fourth', to: 'third'},
+                    {name: 'prev', from: 'third', to: 'second'},
+                    {name: 'prev', from: 'second', to: 'first'},
+                ]
+            })
+
+            expect(wizard.state).toEqual('first')
+            await wizard.next()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            expect(wizard.state).toEqual('third')
+            await wizard.next()
+            expect(wizard.state).toEqual('fourth')
+            await wizard.prev()
+            expect(wizard.state).toEqual('third')
+            await wizard.prev()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            await wizard.next()
+            await wizard.next()
+            expect(wizard.state).toEqual('done')
+            await wizard.prev()
+            expect(wizard.state).toEqual('done')
+
+        })
+
+        it('should support short syntax', async () => {
+            const wizard = new FSM({
+                start: 'first',
+                transitions: [
+                    {name: 'next', states: ['first', 'second', 'third', 'fourth']},
+                    {name: 'next', from: 'fourth', to: 'done'},
+
+                    {name: 'prev', states: ['fourth', 'third', 'second', 'first']},
+                ]
+            })
+
+            expect(wizard.state).toEqual('first')
+            await wizard.next()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            expect(wizard.state).toEqual('third')
+            await wizard.next()
+            expect(wizard.state).toEqual('fourth')
+            await wizard.prev()
+            expect(wizard.state).toEqual('third')
+            await wizard.prev()
+            expect(wizard.state).toEqual('second')
+            await wizard.next()
+            await wizard.next()
+            await wizard.next()
+            expect(wizard.state).toEqual('done')
+            await wizard.prev()
+            expect(wizard.state).toEqual('done')
+
+        })
+
     })
 
 })
