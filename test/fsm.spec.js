@@ -13,8 +13,8 @@ describe('FSM', () => {
                     {name: 'lock', from: 'closed', to: 'locked'},
                     {name: 'unlock', from: 'locked', to: 'closed'}
                 ],
-                methods: {
-                    canBeLocked: function () { return hasKey }
+                handlers: {
+                    canLocked: function () { return hasKey }
                 }
             })
 
@@ -29,6 +29,8 @@ describe('FSM', () => {
             await door.lock()
             expect(door.state).toEqual('closed')
             hasKey = true
+            const canLocked = await door.can('lock')
+            expect(canLocked).toEqual(true)
             await door.lock()
             expect(door.state).toEqual('locked')
             await door.open()
@@ -56,7 +58,7 @@ describe('FSM', () => {
                     {name: 'open', from: 'closed', to: 'opened'},
                     {name: 'close', from: 'opened', to: 'closed'}
                 ],
-                methods: {
+                handlers: {
                     onClose,
                     onOpen,
                     fromClosed,
