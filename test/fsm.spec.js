@@ -8,10 +8,10 @@ describe('FSM', () => {
             const door = new FSM({
                 start: 'closed',
                 transitions: [
-                    {name: 'open', from: 'closed', to: 'opened'},
-                    {name: 'close', from: 'opened', to: 'closed'},
-                    {name: 'lock', from: 'closed', to: 'locked'},
-                    {name: 'unlock', from: 'locked', to: 'closed'}
+                    { name: 'open', from: 'closed', to: 'opened' },
+                    { name: 'close', from: 'opened', to: 'closed' },
+                    { name: 'lock', from: 'closed', to: 'locked' },
+                    { name: 'unlock', from: 'locked', to: 'closed' }
                 ],
                 handlers: {
                     canLocked: function () { return hasKey }
@@ -55,8 +55,8 @@ describe('FSM', () => {
             const doorConfig = {
                 start: 'closed',
                 transitions: [
-                    {name: 'open', from: 'closed', to: 'opened'},
-                    {name: 'close', from: 'opened', to: 'closed'}
+                    { name: 'open', from: 'closed', to: 'opened' },
+                    { name: 'close', from: 'opened', to: 'closed' }
                 ],
                 handlers: {
                     onClose,
@@ -104,9 +104,9 @@ describe('FSM', () => {
             const player = new FSM({
                 start: 'stopped',
                 transitions: [
-                    {name: 'play', from: ['stopped', 'paused'], to: 'playing'},
-                    {name: 'stop', from: ['playing', 'paused'], to: 'stopped'},
-                    {name: 'pause', from: 'playing', to: 'paused'},
+                    { name: 'play', from: ['stopped', 'paused'], to: 'playing' },
+                    { name: 'stop', from: ['playing', 'paused'], to: 'stopped' },
+                    { name: 'pause', from: 'playing', to: 'paused' },
                 ]
             })
 
@@ -149,14 +149,14 @@ describe('FSM', () => {
             const wizard = new FSM({
                 start: 'first',
                 transitions: [
-                    {name: 'next', from: 'first', to: 'second'},
-                    {name: 'next', from: 'second', to: 'third'},
-                    {name: 'next', from: 'third', to: 'fourth'},
-                    {name: 'next', from: 'fourth', to: 'done'},
+                    { name: 'next', from: 'first', to: 'second' },
+                    { name: 'next', from: 'second', to: 'third' },
+                    { name: 'next', from: 'third', to: 'fourth' },
+                    { name: 'next', from: 'fourth', to: 'done' },
 
-                    {name: 'prev', from: 'fourth', to: 'third'},
-                    {name: 'prev', from: 'third', to: 'second'},
-                    {name: 'prev', from: 'second', to: 'first'},
+                    { name: 'prev', from: 'fourth', to: 'third' },
+                    { name: 'prev', from: 'third', to: 'second' },
+                    { name: 'prev', from: 'second', to: 'first' },
                 ]
             })
 
@@ -184,8 +184,8 @@ describe('FSM', () => {
             const wizard = new FSM({
                 start: 'first',
                 transitions: [
-                    {name: 'next', states: ['first', 'second', 'third', 'fourth', 'done']},
-                    {name: 'prev', states: ['fourth', 'third', 'second', 'first']},
+                    { name: 'next', states: ['first', 'second', 'third', 'fourth', 'done'] },
+                    { name: 'prev', states: ['fourth', 'third', 'second', 'first'] },
                 ]
             })
 

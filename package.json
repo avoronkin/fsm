@@ -1,18 +1,23 @@
 {
   "name": "fsm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "finite state machine",
   "main": "lib/fsm.js",
   "scripts": {
     "test": "jest",
-    "dev": "jest --watchAll --notify"
+    "dev": "jest --watchAll --notify",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^22.4.2"
+    "eslint": "^5.8.0",
+    "jest": "^22.4.4"
   },
   "dependencies": {
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.11"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
